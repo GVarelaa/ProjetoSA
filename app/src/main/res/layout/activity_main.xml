@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Other views like Toolbar, FrameLayout for fragmhellzents can go here -->
+    <!-- Other views like Toolbar, FrameLayout for fragments can go here -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -27,10 +27,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" /> <!-- make sure this line points to your menu file -->
+    <!-- make sure this line points to your menu file -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
