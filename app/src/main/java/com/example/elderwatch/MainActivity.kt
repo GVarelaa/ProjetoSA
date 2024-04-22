@@ -1,42 +1,26 @@
 package com.example.elderwatch
 
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.elderwatch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.nav_view)
-        bottomNav.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_home -> true
-                R.id.navigation_dashboard -> true
-                R.id.navigation_settings -> true
-                else -> false
-            }
-        }
+        val navView: BottomNavigationView = binding.navView
 
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-
-        val sensorListener = SensorListener()
-        sensorListener.setSensorManager(sensorManager)
-
-        if (accelerometer != null){
-            sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
-        }
-
-        if (gyroscope != null){
-            sensorManager.registerListener(sensorListener, gyroscope, SensorManager.SENSOR_DELAY_NORMAL)
-        }
+        navView.setupWithNavController(navController)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.elderwatch.fragment
+package com.example.elderwatch.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

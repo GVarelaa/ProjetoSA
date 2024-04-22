@@ -2,8 +2,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.appsnipp.mysettings.SettingsActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/contentBodyColor">
@@ -80,7 +78,7 @@
             android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileCircleImageView"
+                android:id="@+id/profileCircleImageView2"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="15dp"
@@ -90,17 +88,17 @@
                 app:civ_border_width="2dp" />
 
             <TextView
-                android:id="@+id/usernameTextView"
+                android:id="@+id/contact1TextView"
                 style="@style/viewParent.headerText"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/profileCircleImageView"
+                android:layout_toRightOf="@id/profileCircleImageView2"
                 android:text="Guilherme Varela"
                 android:textSize="18sp" />
 
             <TextView
                 style="@style/viewParent.headerText"
-                android:layout_below="@id/usernameTextView"
-                android:layout_toRightOf="@id/profileCircleImageView"
+                android:layout_below="@id/contact1TextView"
+                android:layout_toRightOf="@id/profileCircleImageView2"
                 android:text="\@varelzzz"
                 android:textColor="#5D5C5C"
                 android:textSize="16sp" />
@@ -120,7 +118,7 @@
             android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileCircleImageView"
+                android:id="@+id/profileCircleImageView3"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="15dp"
@@ -130,17 +128,17 @@
                 app:civ_border_width="2dp" />
 
             <TextView
-                android:id="@+id/usernameTextView"
+                android:id="@+id/contact2TextView"
                 style="@style/viewParent.headerText"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/profileCircleImageView"
+                android:layout_toRightOf="@id/profileCircleImageView3"
                 android:text="Millena Santos"
                 android:textSize="18sp" />
 
             <TextView
                 style="@style/viewParent.headerText"
-                android:layout_below="@id/usernameTextView"
-                android:layout_toRightOf="@id/profileCircleImageView"
+                android:layout_below="@id/contact2TextView"
+                android:layout_toRightOf="@id/profileCircleImageView3"
                 android:text="\@mills"
                 android:textColor="#5D5C5C"
                 android:textSize="16sp" />
