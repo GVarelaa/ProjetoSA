@@ -10,4 +10,10 @@
     <color name="contentTextColor">#020000</color>
     <color name="imageBorderColor">#E01E7A</color>
     <color name="miniTitle">#2A2E43</color>
+
+    <!-- navbar-->
+    <color name="selected_color">#FF0000</color> <!-- Red for selected -->
+    <color name="unselected_color">#8A8A8A</color> <!-- Grey for unselected -->
+    <color name="bottom_nav_background">#FFFFFF</color> <!-- White for background -->
+
 </resources>
