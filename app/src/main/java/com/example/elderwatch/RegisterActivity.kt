@@ -1,14 +1,16 @@
 package com.example.elderwatch
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
@@ -20,6 +22,7 @@ class RegisterActivity : ComponentActivity() {
         auth = Firebase.auth
 
         val registerButton = findViewById<Button>(R.id.registerbtn)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
 
         registerButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.username).text.toString()
@@ -45,6 +48,11 @@ class RegisterActivity : ComponentActivity() {
             } else {
                 Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, AuthenticationActivity::class.java)
+            startActivity(intent)
         }
     }
 }
