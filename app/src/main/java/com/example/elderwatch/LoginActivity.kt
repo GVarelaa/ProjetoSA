@@ -25,7 +25,7 @@ class LoginActivity : ComponentActivity() {
         val backButton = findViewById<ImageButton>(R.id.backButton)
 
         loginButton.setOnClickListener {
-            val email = findViewById<EditText>(R.id.username).text.toString()
+            val email = findViewById<EditText>(R.id.email).text.toString()
             val password = findViewById<EditText>(R.id.password).text.toString()
 
             Log.d("LOGIN", "${email} e ${password}")
@@ -33,17 +33,12 @@ class LoginActivity : ComponentActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Login sucesso, atualize a UI com as informações do usuário logado
                         val user = auth.currentUser
-                        // Redirecionar para outra Activity ou atualizar a UI
-                        Log.d("LOGIN", "Sucesso!")
 
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {
-                        // Se falhar, mostrar uma mensagem para o usuário
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Erro no login", Toast.LENGTH_SHORT).show()
                     }
                 }
         }

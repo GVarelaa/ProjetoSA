@@ -25,7 +25,7 @@ class RegisterActivity : ComponentActivity() {
         val backButton = findViewById<ImageButton>(R.id.backButton)
 
         registerButton.setOnClickListener {
-            val email = findViewById<EditText>(R.id.username).text.toString()
+            val email = findViewById<EditText>(R.id.email).text.toString()
             val password = findViewById<EditText>(R.id.password).text.toString()
 
             Log.d("REGISTER", "${email} e ${password}")
@@ -34,15 +34,15 @@ class RegisterActivity : ComponentActivity() {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            // Sucesso no registro, atualizar UI com as informações do usuário
-                            Log.d("RegisterActivity", "createUserWithEmail:success")
                             val user = auth.currentUser
-                            // Navegar para a próxima tela ou mostrar sucesso
+
+                            Toast.makeText(baseContext, "Registo com sucesso", Toast.LENGTH_SHORT).show()
+
+                            // Redireciona para o login
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
                         } else {
-                            // Falha no registro, mostrar mensagem ao usuário
-                            Log.w("RegisterActivity", "createUserWithEmail:failure", task.exception)
-                            Toast.makeText(baseContext, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
+                            Toast.makeText(baseContext, "Erro no registo", Toast.LENGTH_SHORT).show()
                         }
                     }
             } else {
