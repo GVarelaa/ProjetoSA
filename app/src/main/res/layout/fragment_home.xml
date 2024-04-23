@@ -5,9 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/sos_off"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:gravity="center"/>
 
 </FrameLayout>
