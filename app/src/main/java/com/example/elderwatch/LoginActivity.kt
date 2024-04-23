@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +22,7 @@ class LoginActivity : ComponentActivity() {
         auth = Firebase.auth
 
         val loginButton = findViewById<Button>(R.id.loginbtn)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
 
         loginButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.username).text.toString()
@@ -44,6 +46,11 @@ class LoginActivity : ComponentActivity() {
                             Toast.LENGTH_SHORT).show()
                     }
                 }
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, AuthenticationActivity::class.java)
+            startActivity(intent)
         }
     }
 }
