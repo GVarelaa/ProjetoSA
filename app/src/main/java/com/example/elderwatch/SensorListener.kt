@@ -15,6 +15,11 @@ class SensorListener : SensorEventListener {
     }
 
     private lateinit var sensorManager: SensorManager
+    private val sensorData: MutableList<Double> = mutableListOf()
+    private var lastUpdate: Long = 0
+    private val updateThreshold: Long = 10000 // Tempo em milissegundos
+    private val lowThreshold: Double = 2.5
+    private val highThreshold: Double = 8.0
 
     fun setSensorManager(sensorMan: SensorManager){
         sensorManager = sensorMan
@@ -22,7 +27,7 @@ class SensorListener : SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            AccelerometerData.valueX = event.values[0]
+            /*AccelerometerData.valueX = event.values[0]
             AccelerometerData.valueY = event.values[1]
             AccelerometerData.valueZ = event.values[2]
             AccelerometerData.accuracy = event.accuracy
@@ -31,7 +36,33 @@ class SensorListener : SensorEventListener {
             val a: Double = AccelerometerData.valueX.toDouble().pow(2.toDouble())
             val b: Double = AccelerometerData.valueY.toDouble().pow(2.toDouble())
             val c: Double = (AccelerometerData.valueZ-9.8).toDouble().pow(2.toDouble())
-            Log.d("Accelerometer", "${sqrt(a+b+c)}")
+            Log.d("Accelerometer", "${sqrt(a+b+c)}")*/
+
+            val currentTime = System.currentTimeMillis()
+            if ((currentTime - lastUpdate) > updateThreshold && event != null) {
+                lastUpdate = currentTime
+
+                val a: Double = event.values[0].toDouble().pow(2.toDouble())
+                val b: Double = event.values[1].toDouble().pow(2.toDouble())
+                val c: Double = event.values[2].toDouble().pow(2.toDouble())
+                val magnitude = sqrt(a+b+c)
+
+                sensorData.add(magnitude)
+
+                Log.d("Deteção", "A processar queda.....")
+
+                for (i in 0 until sensorData.size) {
+                    if (sensorData[i] < lowThreshold) {
+                        for (j in i+1 until sensorData.size) {
+                            if (sensorData[j] > highThreshold) Log.d("QUEDA", "QUEDAAAA")
+                        }
+                    }
+                }
+
+                sensorData.clear()
+
+                Log.d("NÃO QUEDA", "NÃOOOO QUEDAAAA")
+            }
         }
 
         if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
