@@ -50,13 +50,6 @@ class SensorListener : SensorEventListener {
                 }
             }
         }
-
-        if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            GyroscopeData.valueX = event.values[0]
-            GyroscopeData.valueY = event.values[1]
-            GyroscopeData.valueZ = event.values[2]
-            GyroscopeData.accuracy = event.accuracy
-        }
     }
 
     private fun detectFall(): Boolean {
