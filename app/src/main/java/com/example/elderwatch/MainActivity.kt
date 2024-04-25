@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
 
         val sensorListener = SensorListener()
