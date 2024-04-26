@@ -27,16 +27,11 @@ class ContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Find the "Adicionar Contacto" button by its ID
         val addButton = view.findViewById<Button>(R.id.addcontactbt)
 
-        // Set OnClickListener for the button
         addButton.setOnClickListener {
-            // Create an instance of MyDialogFragment
-            val dialogFragment = MyDialogFragment()
-
-            // Show the dialog fragment
-            dialogFragment.show(parentFragmentManager, "MyDialogFragment")
+            val dialogFragment = ContactsFormFragment()
+            dialogFragment.show(parentFragmentManager, "ContactsFormFragment")
         }
     }
 

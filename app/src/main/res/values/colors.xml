@@ -4,7 +4,7 @@
     <color name="black">#000000</color>
     <color name="colorPrimary">#205375</color>
     <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#FF402D</color>
+    <color name="colorAccent">#205375</color>
 
     <!--colors for light mode-->
     <color name="contentBodyColor">#FCFCFC</color>
