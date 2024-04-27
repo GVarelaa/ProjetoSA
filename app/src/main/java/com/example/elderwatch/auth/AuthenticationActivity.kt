@@ -9,7 +9,7 @@ import com.example.elderwatch.R
 class AuthenticationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.acitivity_authentication)
+        setContentView(R.layout.activity_authentication)
 
         val registerButton = findViewById<Button>(R.id.register)
         val loginButton = findViewById<Button>(R.id.login)
