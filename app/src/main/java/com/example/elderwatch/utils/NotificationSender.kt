@@ -46,6 +46,8 @@ object NotificationSender {
         val contacts = UserManager.contacts
 
         if (contacts != null) {
+            val tokens = mutableSetOf<String>()
+
             for (contact in contacts) {
                 db.collection("users")
                     .document(contact.toString())
@@ -54,7 +56,9 @@ object NotificationSender {
                         if (document != null) {
                             val token = document.get("token")
 
-                            if (token != null) {
+                            if (token != null && !tokens.contains(token)) {
+                                tokens.add(token.toString())
+
                                 val endpoint = "http://10.0.2.2:5000/send"
                                 val title = "Alerta de queda!"
                                 val body = "O utilizador ${UserManager.email} possivelmente sofreu uma queda."
