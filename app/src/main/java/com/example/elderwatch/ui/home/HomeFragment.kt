@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.example.elderwatch.utils.NotificationSender
 import com.example.elderwatch.R
 
 class HomeFragment : Fragment() {
@@ -39,6 +40,9 @@ class HomeFragment : Fragment() {
                     imageView.setImageResource(R.drawable.sos_off)
                 }, 100) // 100 milliseconds delay for 1 second
             }
+            
+            // Enviar notificações
+            NotificationSender.notifyContacts()
         }
 
         return view

@@ -1,15 +1,10 @@
-package com.example.elderwatch
+package com.example.elderwatch.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.elderwatch.R
 
 class AuthenticationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,7 @@
-package com.example.elderwatch
+package com.example.elderwatch.utils
 
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -36,11 +37,17 @@ class PushNotificationService: FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        Log.d("TOKEN", "Refreshed token: $token")
-        sendRegistrationToServer(token)
+        val db = FirebaseFirestore.getInstance()
+
+        val tokenField = hashMapOf(
+            "token" to token
+        )
+
+        UserManager.uid?.let {
+            db.collection("users")
+                .document(it)
+                .update(tokenField as Map<String, Any>)
+        }
     }
 
-    private fun sendRegistrationToServer(token: String) {
-        // Envia o token do FCM para o servidor, se necessário
-    }
 }

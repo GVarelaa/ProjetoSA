@@ -9,7 +9,6 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -20,36 +19,22 @@ import com.example.elderwatch.databinding.ActivityMainBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import android.Manifest
+import com.example.elderwatch.utils.SensorListener
+import com.example.elderwatch.utils.UserManager
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requestNotificationPermission()
-        //createNotificationChannel()
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val navView: BottomNavigationView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
-        navView.setupWithNavController(navController)
-
-        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
-
-        val sensorListener = SensorListener()
-        sensorListener.setSensorManager(sensorManager)
-
-        if (accelerometer != null){
-            sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
-        }
-
+        db = FirebaseFirestore.getInstance()
+        val user = UserManager
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -57,24 +42,33 @@ class MainActivity : AppCompatActivity() {
                 return@OnCompleteListener
             }
 
-            // Obter novo Token de Registro FCM
-            val token = task.result
-            // Log e toste (Opcional)
-            Log.d("FCM Token", "FCM Token: $token")
-        })
-    }
-
-    private fun createNotificationChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channel = NotificationChannel(
-                "emergency_contacts",
-                "Emergency Contacts",
-                NotificationManager.IMPORTANCE_DEFAULT
+            val tokenField = hashMapOf(
+                "token" to task.result
             )
-            channel.description = "Used for the emergency contacts notifications"
 
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            user.uid?.let {
+                db.collection("users")
+                    .document(it)
+                    .update(tokenField as Map<String, Any>)
+            }
+        })
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        navView.setupWithNavController(navController)
+
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
+        val sensorListener = SensorListener()
+
+        sensorListener.setSensorManager(sensorManager)
+
+        if (accelerometer != null){
+            sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
         }
     }
 

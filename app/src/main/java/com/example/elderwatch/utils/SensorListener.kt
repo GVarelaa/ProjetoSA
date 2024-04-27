@@ -1,11 +1,10 @@
-package com.example.elderwatch
+package com.example.elderwatch.utils
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import java.lang.Math.pow
 import kotlin.math.pow
 import kotlin.math.sqrt
 
