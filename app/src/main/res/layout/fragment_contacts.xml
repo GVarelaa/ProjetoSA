@@ -52,7 +52,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
                 android:src="@drawable/ic_trash" />
+
+            <ImageView
+                style="@style/viewParent"
+                android:src="@drawable/ic_more"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
@@ -90,13 +97,20 @@
                 style="@style/viewParent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
                 android:src="@drawable/ic_trash" />
+
+            <ImageView
+                style="@style/viewParent"
+                android:src="@drawable/ic_more"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
         <Button
             android:id="@+id/addcontactbt"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/outlined_dark_button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -104,7 +118,9 @@
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:drawableLeft="@drawable/ic_plus"
-            android:padding="20dp"
+            android:padding="22dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="Adicionar Contacto" />
 
     </LinearLayout>
