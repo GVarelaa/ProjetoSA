@@ -3,5 +3,5 @@ package com.example.elderwatch.utils
 object UserManager {
     var uid: String? = null
     var email: String? = null
-    var contacts: MutableList<*>? = null
+    var contacts: MutableList<String>? = null
 }

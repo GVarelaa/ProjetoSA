@@ -2,7 +2,6 @@ package com.example.elderwatch.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -15,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.tasks.await
 
 class LoginActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
@@ -46,11 +44,17 @@ class LoginActivity : ComponentActivity() {
                                 .get()
                                 .addOnSuccessListener { document ->
                                     if (document != null) {
-                                        val contacts = document.get("contacts") as MutableList<*>
+                                        val contacts = document.get("contacts")
+
+                                        if(contacts != null) {
+                                            UserManager.contacts = contacts as MutableList<String>?
+                                        }
+                                        else {
+                                            UserManager.contacts = mutableListOf()
+                                        }
 
                                         UserManager.uid = user.uid
                                         UserManager.email = user.email
-                                        UserManager.contacts = contacts
 
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)

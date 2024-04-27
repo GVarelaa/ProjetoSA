@@ -1,5 +1,6 @@
 package com.example.elderwatch.utils
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.Call
 import okhttp3.Callback
@@ -11,7 +12,7 @@ import okhttp3.Response
 import java.io.IOException
 
 object NotificationSender {
-    fun sendNotification(endpoint: String, token: String, title: String, body: String) {
+    fun sendNotification(endpoint: String, token: Any?, title: String, body: String) {
         val client = OkHttpClient()
 
         val mediaType = "application/json; charset=utf-8".toMediaType()
@@ -51,13 +52,15 @@ object NotificationSender {
                     .get()
                     .addOnSuccessListener { document ->
                         if (document != null) {
-                            val token = document.get("token") as String
+                            val token = document.get("token")
 
-                            val endpoint = "http://10.0.2.2:5000/send"
-                            val title = "Alerta de queda!"
-                            val body = "O utilizador ${UserManager.email} possivelmente sofreu uma queda."
+                            if (token != null) {
+                                val endpoint = "http://10.0.2.2:5000/send"
+                                val title = "Alerta de queda!"
+                                val body = "O utilizador ${UserManager.email} possivelmente sofreu uma queda."
 
-                            sendNotification(endpoint, token, title, body)
+                                sendNotification(endpoint, token, title, body)
+                            }
                         }
                     }
             }

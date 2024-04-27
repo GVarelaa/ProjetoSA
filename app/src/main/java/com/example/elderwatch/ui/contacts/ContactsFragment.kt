@@ -7,7 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 import com.example.elderwatch.R
+import com.example.elderwatch.utils.UserManager
 
 class ContactsFragment : Fragment() {
 
@@ -33,7 +38,50 @@ class ContactsFragment : Fragment() {
             val dialogFragment = ContactsFormFragment()
             dialogFragment.show(parentFragmentManager, "ContactsFormFragment")
         }
+
+        val dynamicContent = view.findViewById<LinearLayout>(R.id.contacts_layout)
+        val contacts = UserManager.contacts
+
+        contacts?.forEach { contact ->
+            val contactItemLayout = LayoutInflater.from(context).inflate(
+                R.layout.contact_item,
+                dynamicContent,
+                false
+            ) as RelativeLayout
+
+            // Set contact data to layout elements
+            val contactName = contactItemLayout.findViewById<TextView>(R.id.contact_name)
+            contactName.text = contact.toString()
+
+            val contactEmail = contactItemLayout.findViewById<TextView>(R.id.contact_email)
+            contactEmail.text = contact.toString()
+
+            dynamicContent.addView(contactItemLayout)
+        }
+
+        /*viewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
+        viewModel.contacts.observe(viewLifecycleOwner) { contacts ->
+            //dynamicContent.removeAllViews()
+
+            contacts?.forEach { contact ->
+                val contactItemLayout = LayoutInflater.from(context).inflate(
+                    R.layout.contact_item,
+                    dynamicContent,
+                    false
+                ) as RelativeLayout
+
+                // Set contact data to layout elements
+                val contactName = contactItemLayout.findViewById<TextView>(R.id.contact_name)
+                contactName.text = contact.toString()
+
+                val contactEmail = contactItemLayout.findViewById<TextView>(R.id.contact_email)
+                contactEmail.text = contact.toString()
+
+                dynamicContent.addView(contactItemLayout)
+            }
+        }*/
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
