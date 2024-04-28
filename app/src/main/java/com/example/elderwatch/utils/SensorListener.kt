@@ -43,7 +43,7 @@ class SensorListener : SensorEventListener {
                 if (fall){
                     Log.d("FALL DETECTION", "True")
 
-                    NotificationSender.notifyContacts()
+                    DataSender.notifyContacts()
                 }
                 else {
                     Log.d("FALL DETECTION", "False")
