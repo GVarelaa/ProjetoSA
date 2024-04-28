@@ -30,9 +30,11 @@ class RegisterActivity : ComponentActivity() {
 
         registerButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.email).text.toString()
+            val name = findViewById<EditText>(R.id.name).text.toString()
+            val phone = findViewById<EditText>(R.id.phone).text.toString()
             val password = findViewById<EditText>(R.id.password).text.toString()
 
-            if (email.isNotEmpty() && password.isNotEmpty()) {
+            if (email.isNotEmpty() && name.isNotEmpty() && phone.isNotEmpty() && password.isNotEmpty()) {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
@@ -41,6 +43,8 @@ class RegisterActivity : ComponentActivity() {
                             if (user != null) {
                                 val doc = hashMapOf(
                                     "email" to user.email,
+                                    "name" to name,
+                                    "phone" to phone,
                                     "contacts" to mutableListOf<Any>()
                                 )
 
@@ -63,7 +67,7 @@ class RegisterActivity : ComponentActivity() {
                         }
                     }
             } else {
-                Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Todos os campos tem de ser preenchidos", Toast.LENGTH_SHORT).show()
             }
         }
 
