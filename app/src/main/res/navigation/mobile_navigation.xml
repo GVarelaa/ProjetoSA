@@ -28,4 +28,15 @@
         android:name="com.example.elderwatch.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_editprofile"
+        android:name="com.example.elderwatch.ui.settings.EditProfileFragment"
+        android:label="Editar Perfil"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <action
+        android:id="@+id/action_settingsFragment_to_editProfileFragment"
+        app:destination="@id/navigation_editprofile" />
+
 </navigation>
