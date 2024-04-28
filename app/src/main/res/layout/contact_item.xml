@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="22dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +17,6 @@
         <TextView
             android:id="@+id/contact_name"
             style="@style/viewParent.headerText"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="5dp"
             android:textSize="18sp" />
 

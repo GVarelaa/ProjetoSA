@@ -1,6 +1,7 @@
 package com.example.elderwatch.ui.contacts
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class ContactAdapter(private val context: Context, private val contacts: List<Co
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {
             // Handle click event here
+            Log.d("TESTE", "CLICK")
         }
     }
 

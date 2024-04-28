@@ -44,6 +44,10 @@ class LoginActivity : ComponentActivity() {
                                 .get()
                                 .addOnSuccessListener { document ->
                                     if (document != null) {
+                                        UserManager.uid = user.uid
+                                        UserManager.email = user.email
+                                        UserManager.contacts = mutableListOf<Contact>()
+
                                         val uids = document.get("contacts") as MutableList<String>?
 
                                         if(uids != null) {
@@ -59,12 +63,7 @@ class LoginActivity : ComponentActivity() {
                                                     }
                                             }
                                         }
-                                        else {
-                                            UserManager.contacts = mutableListOf()
-                                        }
 
-                                        UserManager.uid = user.uid
-                                        UserManager.email = user.email
 
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)

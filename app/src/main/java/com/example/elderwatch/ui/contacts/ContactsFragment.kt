@@ -42,6 +42,10 @@ class ContactsFragment : Fragment() {
 
         val contactList = UserManager.contacts
 
+        if (contactList != null) {
+            Log.d("TESTE", contactList.size.toString())
+        }
+
         contactAdapter = contactList?.let {
             ContactAdapter(requireContext(), it)
         }!!
