@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.elderwatch.MainActivity
 import com.example.elderwatch.R
+import com.example.elderwatch.utils.Contact
 import com.example.elderwatch.utils.UserManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -17,14 +18,13 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+    private var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         auth = Firebase.auth
-        db = FirebaseFirestore.getInstance()
 
         val loginButton = findViewById<Button>(R.id.loginbtn)
         val backButton = findViewById<ImageButton>(R.id.backButton)
@@ -44,10 +44,20 @@ class LoginActivity : ComponentActivity() {
                                 .get()
                                 .addOnSuccessListener { document ->
                                     if (document != null) {
-                                        val contacts = document.get("contacts")
+                                        val uids = document.get("contacts") as MutableList<String>?
 
-                                        if(contacts != null) {
-                                            UserManager.contacts = contacts as MutableList<String>?
+                                        if(uids != null) {
+                                            for (uid in uids) {
+                                                db.collection("users")
+                                                    .document(uid)
+                                                    .get()
+                                                    .addOnSuccessListener {document ->
+                                                        val contact = Contact(document.get("name") as String
+                                                                            , document.get("email") as String)
+
+                                                        UserManager.contacts?.add(contact)
+                                                    }
+                                            }
                                         }
                                         else {
                                             UserManager.contacts = mutableListOf()
