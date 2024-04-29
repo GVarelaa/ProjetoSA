@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
@@ -55,13 +59,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         viewModel.location.observe(viewLifecycleOwner) { location ->
             if (::map.isInitialized) {
                 updateMap(location)
+                viewModel.lastUpdate.observe(viewLifecycleOwner) { lastUpdate ->
+                    val textView = view?.findViewById<TextView>(R.id.lastUpdateTextView)
+                    textView?.text = "Última Atualização: $lastUpdate"
+                }
             }
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.mapType = GoogleMap.MAP_TYPE_NORMAL
+        map.mapType = GoogleMap.MAP_TYPE_HYBRID
 
         viewModel.location.value?.let { updateMap(it) }
     }
@@ -73,7 +81,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             val cameraPosition = CameraPosition.Builder()
                 .target(location)
-                .zoom(17f)
+                .zoom(19f)
                 .build()
 
             map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
