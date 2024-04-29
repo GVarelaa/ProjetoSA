@@ -38,15 +38,15 @@ class EditProfileViewModel : ViewModel() {
     fun saveUserProfile(name: String, phone: String) {
         val user = auth.currentUser
         user?.let { firebaseUser ->
-            val userMap = mapOf(
+            val userUpdates = mapOf(
                 "name" to name,
                 "phone" to phone
             )
-            db.collection("users").document(firebaseUser.uid).set(userMap)
+            db.collection("users").document(firebaseUser.uid).update(userUpdates)
                 .addOnSuccessListener {
-                    userProfile.postValue(userMap)
-                }.addOnFailureListener {
-                    userProfile.postValue(mapOf("error" to "Failed to save user profile"))
+                    userProfile.postValue(userUpdates)
+                }.addOnFailureListener { e ->
+                    userProfile.postValue(mapOf("error" to "Failed to save user profile: ${e.message}"))
                 }
         }
     }

@@ -37,9 +37,14 @@ class SettingsFragment : Fragment(){
         }
 
         val editProfileTextView = view.findViewById<TextView>(R.id.editProfileTextView)
+        val editPasswordTextView = view.findViewById<TextView>(R.id.editPasswordTextView)
 
         editProfileTextView.setOnClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_editProfileFragment)
+        }
+
+        editPasswordTextView.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_editPasswordFragment)
         }
 
         return view
