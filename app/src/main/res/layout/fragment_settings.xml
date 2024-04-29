@@ -47,14 +47,16 @@
             android:text="Editar Perfil"
             app:drawableLeftCompat="@drawable/ic_edit_profile"
             android:focusable="true"
-            android:clickable="true"
-            android:onClick="onEditProfileClicked"/>
+            android:clickable="true"/>
 
         <TextView
+            android:id="@+id/editPasswordTextView"
             style="@style/viewParent.headerText.settingsTextIcon"
             android:layout_marginTop="10dp"
             android:text="Alterar Password"
-            app:drawableLeftCompat="@drawable/ic_edit_password" />
+            app:drawableLeftCompat="@drawable/ic_edit_password"
+            android:focusable="true"
+            android:clickable="true"/>
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"

@@ -35,12 +35,26 @@
         android:label="Editar Perfil"
         tools:layout="@layout/fragment_edit_profile" />
 
+    <fragment
+        android:id="@+id/navigation_editpassword"
+        android:name="com.example.elderwatch.ui.settings.EditPasswordFragment"
+        android:label="Editar Password"
+        tools:layout="@layout/fragment_edit_password" />
+
     <action
         android:id="@+id/action_settingsFragment_to_editProfileFragment"
         app:destination="@id/navigation_editprofile" />
 
     <action
         android:id="@+id/action_editProfileFragment_to_settingsFragment"
+        app:destination="@id/navigation_settings" />
+
+    <action
+        android:id="@+id/action_settingsFragment_to_editPasswordFragment"
+        app:destination="@id/navigation_editpassword" />
+
+    <action
+        android:id="@+id/action_editPasswordFragment_to_settingsFragment"
         app:destination="@id/navigation_settings" />
 
 </navigation>
