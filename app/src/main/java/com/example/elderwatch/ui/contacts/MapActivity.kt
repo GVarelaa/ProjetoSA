@@ -31,7 +31,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.mapType = GoogleMap.MAP_TYPE_NORMAL
+        map.mapType = GoogleMap.MAP_TYPE_SATELLITE
 
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)

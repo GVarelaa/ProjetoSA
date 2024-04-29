@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         requestNotificationPermission()
+        createNotificationChannel()
 
         // Enviar o token
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -111,6 +112,19 @@ class MainActivity : AppCompatActivity() {
                     0
                 )
             }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "falls"
+            val channelName = "Falls Channel"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, channelName, importance)
+            channel.description = "Channel to fall notifications"
+
+            val notificationManager: NotificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

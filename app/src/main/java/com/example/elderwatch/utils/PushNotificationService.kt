@@ -1,6 +1,11 @@
 package com.example.elderwatch.utils
 
+import android.app.NotificationManager
+import android.content.Context
+import android.graphics.Color
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import com.example.elderwatch.R
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -8,30 +13,20 @@ import com.google.firebase.messaging.RemoteMessage
 class PushNotificationService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        Log.d("RECEIVE", "From: ${message.from}")
 
-        // Check if message contains a data payload.
-        if (message.data.isNotEmpty()) {
-            Log.d("RECEIVE", "Message data payload: ${message.data}")
-
-            /*
-            // Check if data needs to be processed by long running job
-            if (needsToBeScheduled()) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
-                scheduleJob()
-            } else {
-                // Handle message within 10 seconds
-                handleNow()
-            }*/
-        }
-
-        // Check if message contains a notification payload.
         message.notification?.let {
             Log.d("RECEIVE", "Message Notification Body: ${it.body}")
-        }
 
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
+            val channelId = "falls"
+            val notificationBuilder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_eye)
+                .setColor(Color.parseColor("#FF0000"))
+                .setContentTitle(it.title)
+                .setContentText(it.body)
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(1, notificationBuilder.build())
+        }
     }
 
     override fun onNewToken(token: String) {
