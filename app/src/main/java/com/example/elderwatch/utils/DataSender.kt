@@ -86,7 +86,7 @@ object DataSender {
 
             for (contact in contacts) {
                 db.collection("users")
-                    .document(contact.toString())
+                    .document(contact.uid)
                     .get()
                     .addOnSuccessListener { document ->
                         if (document != null) {

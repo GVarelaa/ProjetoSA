@@ -56,10 +56,13 @@ class LoginActivity : ComponentActivity() {
                                                     .document(uid)
                                                     .get()
                                                     .addOnSuccessListener {document ->
-                                                        val contact = Contact(document.get("name") as String
-                                                                            , document.get("email") as String)
+                                                        if(document.exists()) {
+                                                            val contact = Contact(document.get("name") as String
+                                                                , document.get("email") as String
+                                                                , uid)
 
-                                                        UserManager.contacts?.add(contact)
+                                                            UserManager.contacts?.add(contact)
+                                                        }
                                                     }
                                             }
                                         }
