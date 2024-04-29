@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
                 ),
                 FINE_PERMISSION_CODE
             )
-            return
         }
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->

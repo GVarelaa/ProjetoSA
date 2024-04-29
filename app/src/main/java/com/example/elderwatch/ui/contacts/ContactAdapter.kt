@@ -34,14 +34,11 @@ class ContactAdapter(private val context: Context, private val contacts: List<Co
         holder.contactName.text = contact.name
         holder.contactEmail.text = contact.email
 
-        val db = FirebaseFirestore.getInstance()
-
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {
             val navController = Navigation.findNavController(holder.itemView)
             val bundle = bundleOf("contactId" to contact.uid)
             navController.navigate(R.id.navigation_map, bundle)
-            Log.d("TESTE", "CLICK")
         }
     }
 

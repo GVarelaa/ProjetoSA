@@ -4,7 +4,12 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -14,9 +19,9 @@ class SensorListener : SensorEventListener {
     }
 
     private lateinit var sensorManager: SensorManager
-    private val sensorData: MutableList<Double> = mutableListOf()
+    private val sensorData: MutableList<HashMap<String, Any>> = mutableListOf()
     private var lastUpdate: Long = 0
-    private val updateThreshold: Long = 10000 // Tempo em milissegundos
+    private val updateThreshold: Long = 30000 // Tempo em milissegundos (30 segundos)
     private val lowThreshold: Double = 2.5
     private val highThreshold: Double = 8.0
 
@@ -24,14 +29,22 @@ class SensorListener : SensorEventListener {
         sensorManager = sensorMan
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onSensorChanged(event: SensorEvent) {
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            val a: Double = event.values[0].toDouble().pow(2.toDouble())
-            val b: Double = event.values[1].toDouble().pow(2.toDouble())
-            val c: Double = event.values[2].toDouble().pow(2.toDouble())
-            val magnitude = sqrt(a+b+c)
+        if (event.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
+            val x: Double = event.values[0].toDouble().pow(2.toDouble())
+            val y: Double = event.values[1].toDouble().pow(2.toDouble())
+            val z: Double = event.values[2].toDouble().pow(2.toDouble())
+            val magnitude = sqrt(x+y+z)
 
-            sensorData.add(magnitude)
+            val data = HashMap<String, Any>()
+            data["x"] = x
+            data["y"] = y
+            data["z"] = z
+            data["magnitude"] = magnitude
+            data["timestamp"] = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+
+            sensorData.add(data)
 
             val currentTime = System.currentTimeMillis()
 
@@ -41,30 +54,28 @@ class SensorListener : SensorEventListener {
                 val fall = detectFall()
 
                 if (fall){
-                    Log.d("FALL DETECTION", "True")
-
                     DataSender.notifyContacts()
+
+                    Log.d("FALL DETECTION", "True")
                 }
-                else {
-                    Log.d("FALL DETECTION", "False")
-                }
+                else Log.d("FALL DETECTION", "False")
+
+                DataSender.sendSensorData(sensorData, fall)
+
+                sensorData.clear()
             }
         }
     }
 
     private fun detectFall(): Boolean {
         for (i in 0 until sensorData.size) {
-            if (sensorData[i] < lowThreshold) {
+            if ((sensorData[i]["magnitude"] as Double) < lowThreshold) {
                 for (j in i+1 until sensorData.size) {
-                    if (sensorData[j] > highThreshold) {
-                        sensorData.clear()
-                        return true
-                    }
+                    if ((sensorData[j]["magnitude"] as Double) > highThreshold) return true
                 }
             }
         }
 
-        sensorData.clear()
         return false
     }
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
