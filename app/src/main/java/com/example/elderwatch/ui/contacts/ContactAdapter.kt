@@ -1,6 +1,7 @@
 package com.example.elderwatch.ui.contacts
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elderwatch.R
 import com.example.elderwatch.utils.Contact
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 
 class ContactAdapter(private val context: Context, private val contacts: List<Contact>) :
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
@@ -29,9 +32,26 @@ class ContactAdapter(private val context: Context, private val contacts: List<Co
         holder.contactName.text = contact.name
         holder.contactEmail.text = contact.email
 
+        val db = FirebaseFirestore.getInstance()
+
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {
-            // Handle click event here
+            db.collection("users")
+                .document(contact.uid)
+                .get()
+                .addOnSuccessListener {document ->
+                    if (document != null){
+                        val location = document.get("location") as Map<String, Any>
+
+                        val intent = Intent(context, MapActivity::class.java)
+                        intent.putExtra("latitude", location["latitude"] as Double)
+                        intent.putExtra("longitude", location["longitude"] as Double)
+                        context.startActivity(intent)
+                    }
+
+                }
+
+
             Log.d("TESTE", "CLICK")
         }
     }
