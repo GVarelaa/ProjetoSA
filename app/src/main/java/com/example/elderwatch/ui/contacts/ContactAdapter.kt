@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elderwatch.R
 import com.example.elderwatch.utils.Contact
@@ -32,27 +34,11 @@ class ContactAdapter(private val context: Context, private val contacts: List<Co
         holder.contactName.text = contact.name
         holder.contactEmail.text = contact.email
 
-        val db = FirebaseFirestore.getInstance()
-
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {
-            db.collection("users")
-                .document(contact.uid)
-                .get()
-                .addOnSuccessListener {document ->
-                    if (document != null){
-                        val location = document.get("location") as Map<String, Any>
-
-                        val intent = Intent(context, MapActivity::class.java)
-                        intent.putExtra("latitude", location["latitude"] as Double)
-                        intent.putExtra("longitude", location["longitude"] as Double)
-                        context.startActivity(intent)
-                    }
-
-                }
-
-
-            Log.d("TESTE", "CLICK")
+            val navController = Navigation.findNavController(holder.itemView)
+            val bundle = bundleOf("contactId" to contact.uid)
+            navController.navigate(R.id.navigation_map, bundle)
         }
     }
 

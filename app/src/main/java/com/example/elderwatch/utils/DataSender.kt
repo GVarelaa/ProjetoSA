@@ -106,4 +106,18 @@ object DataSender {
             }
         }
     }
+
+    fun sendSensorData(data: MutableList<HashMap<String, Any>>, fall: Boolean) {
+        val db = FirebaseFirestore.getInstance()
+        val uid = UserManager.uid
+
+        val document = hashMapOf(
+            "uid" to uid,
+            "data" to data,
+            "fall" to fall
+        )
+
+        db.collection("data")
+            .add(document)
+    }
 }
