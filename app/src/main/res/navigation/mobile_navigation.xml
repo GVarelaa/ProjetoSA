@@ -39,4 +39,8 @@
         android:id="@+id/action_settingsFragment_to_editProfileFragment"
         app:destination="@id/navigation_editprofile" />
 
+    <action
+        android:id="@+id/action_editProfileFragment_to_settingsFragment"
+        app:destination="@id/navigation_settings" />
+
 </navigation>
