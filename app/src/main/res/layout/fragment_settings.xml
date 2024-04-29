@@ -60,25 +60,17 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
-            android:text="Notificações" />
-
-        <Switch
-            style="@style/settingsText"
-            android:checked="true"
-            android:drawableStart="@drawable/ic_notifications"
-            android:text="Notificações"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-        <TextView
-            style="@style/viewParent.headerText.settingsMiniTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sair" />
 
         <TextView
+            android:id="@+id/logoutTextView"
             style="@style/viewParent.headerText.settingsTextIcon"
             android:text="Sair"
-            app:drawableLeftCompat="@drawable/ic_logout" />
+            app:drawableLeftCompat="@drawable/ic_logout"
+            android:focusable="true"
+            android:clickable="true"/>
 
 
     </LinearLayout>
