@@ -41,6 +41,16 @@
         android:label="Editar Password"
         tools:layout="@layout/fragment_edit_password" />
 
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.elderwatch.ui.contacts.MapFragment"
+        android:label="Mapa"
+        tools:layout="@layout/fragment_map">
+        <argument
+            app:argType="string"
+            android:name="contactId"/>
+    </fragment>
+
     <action
         android:id="@+id/action_settingsFragment_to_editProfileFragment"
         app:destination="@id/navigation_editprofile" />
@@ -56,5 +66,9 @@
     <action
         android:id="@+id/action_editPasswordFragment_to_settingsFragment"
         app:destination="@id/navigation_settings" />
+
+    <action
+        android:id="@+id/action_mapFragment_to_contactsFragment"
+        app:destination="@id/navigation_contacts" />
 
 </navigation>
