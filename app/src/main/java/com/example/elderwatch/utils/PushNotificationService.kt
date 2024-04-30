@@ -15,8 +15,6 @@ class PushNotificationService: FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         message.notification?.let {
-            Log.d("RECEIVE", "Message Notification Body: ${it.body}")
-
             val channelId = "falls"
             val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_eye)

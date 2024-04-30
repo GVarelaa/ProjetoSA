@@ -2,10 +2,7 @@ package com.example.elderwatch
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.pm.PackageManager
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,14 +16,10 @@ import com.example.elderwatch.databinding.ActivityMainBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import android.Manifest
-import android.location.Location
+import android.content.Intent
 import com.example.elderwatch.utils.DataSender
-import com.example.elderwatch.utils.DataSender.sendLocation
-import com.example.elderwatch.utils.DataSender.sendToken
-import com.example.elderwatch.utils.SensorListener
-import com.example.elderwatch.utils.UserManager
+import com.example.elderwatch.utils.SensorService
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : AppCompatActivity() {
@@ -86,15 +79,8 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
-        val sensorListener = SensorListener()
-
-        sensorListener.setSensorManager(sensorManager)
-
-        if (accelerometer != null){
-            sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
-        }
+        val serviceIntent = Intent(this, SensorService::class.java)
+        ContextCompat.startForegroundService(this, serviceIntent)
     }
 
     private fun requestNotificationPermission(){
@@ -116,14 +102,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "falls"
-            val channelName = "Falls Channel"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(channelId, channelName, importance)
-            channel.description = "Channel to fall notifications"
+            val fallsChannel = NotificationChannel("falls", "Falls", NotificationManager.IMPORTANCE_DEFAULT)
+            fallsChannel.description = "Channel to fall notifications"
+
+            val sensorChannel = NotificationChannel("sensor_service", "Sensor Service", NotificationManager.IMPORTANCE_DEFAULT)
 
             val notificationManager: NotificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(fallsChannel)
+            notificationManager.createNotificationChannel(sensorChannel)
         }
     }
 }
