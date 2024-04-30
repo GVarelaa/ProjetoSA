@@ -4,6 +4,7 @@ import android.app.Activity
 import android.location.Location
 import android.util.Log
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.Call
@@ -80,7 +81,20 @@ object DataSender {
     fun notifyContacts() {
         val db = FirebaseFirestore.getInstance()
         val contacts = UserManager.contacts
+        val uid = UserManager.uid
 
+        // Adicionar queda à lista de quedas
+        if (uid != null) {
+            val timestamp = Timestamp.now()
+
+            UserManager.falls?.add(0, timestamp)
+
+            db.collection("users")
+                .document(uid)
+                .update("falls", FieldValue.arrayUnion(timestamp))
+        }
+
+        // Notificar todos os contactos
         if (contacts != null) {
             val tokens = mutableSetOf<String>()
 

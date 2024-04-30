@@ -45,7 +45,8 @@ class RegisterActivity : ComponentActivity() {
                                     "email" to user.email,
                                     "name" to name,
                                     "phone" to phone,
-                                    "contacts" to mutableListOf<Any>()
+                                    "contacts" to mutableListOf<Any>(),
+                                    "falls" to mutableListOf<Any>()
                                 )
 
                                 db.collection("users")

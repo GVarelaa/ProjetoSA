@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.elderwatch.ui.dashboard.DashboardFragment"
+        android:name="com.example.elderwatch.ui.activities.ActivitiesFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_activities" />
 
     <fragment
         android:id="@+id/navigation_contacts"
