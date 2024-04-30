@@ -28,7 +28,6 @@ class ContactsFragment : Fragment() {
 
     private lateinit var viewModel: ContactsViewModel
     private lateinit var contactAdapter: ContactAdapter
-    private var db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +41,6 @@ class ContactsFragment : Fragment() {
 
         val contactList = UserManager.contacts
 
-        if (contactList != null) {
-            Log.d("TESTE", contactList.size.toString())
-        }
-
         contactAdapter = contactList?.let {
             ContactAdapter(requireContext(), it)
         }!!
@@ -54,65 +49,6 @@ class ContactsFragment : Fragment() {
             adapter = contactAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-
-        //view.findViewById<RecyclerView>(R.id.contact_list).adapter = contactAdapter
-        /*val addButton = view.findViewById<Button>(R.id.addcontactbt)
-
-        addButton.setOnClickListener {
-            val email = view.findViewById<EditText>(R.id.contact_email)
-
-            db.collection("users")
-                .whereEqualTo("email", email.text.toString())
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (documents.isEmpty) {
-                        Toast.makeText(requireContext(), "Email inválido", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val uid = documents.first().id
-
-                        viewModel.addContact(uid)
-
-                        UserManager.uid?.let {
-                            db.collection("users")
-                                .document(it)
-                                .update("contacts", FieldValue.arrayUnion(uid))
-                                .addOnSuccessListener {
-                                    Toast.makeText(requireActivity(), "Email adicionado com sucesso", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(requireActivity(), "Error ao adicionar", Toast.LENGTH_SHORT).show()
-                                }
-                        }
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Toast.makeText(requireActivity(), "Email inválido", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-        val dynamicContent = view.findViewById<LinearLayout>(R.id.contacts_layout)
-
-        viewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
-        viewModel.contacts.observe(viewLifecycleOwner) { contacts ->
-            //dynamicContent.removeAllViews()
-
-            contacts?.forEach { contact ->
-                val contactItemLayout = LayoutInflater.from(context).inflate(
-                    R.layout.contact_item,
-                    dynamicContent,
-                    false
-                ) as RelativeLayout
-
-                // Set contact data to layout elements
-                val contactName = contactItemLayout.findViewById<TextView>(R.id.contact_name)
-                contactName.text = contact.toString()
-
-                val contactEmail = contactItemLayout.findViewById<TextView>(R.id.contact_email)
-                contactEmail.text = contact.toString()
-
-                dynamicContent.addView(contactItemLayout)
-            }
-        }*/
     }
 
 

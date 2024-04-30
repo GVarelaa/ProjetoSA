@@ -11,6 +11,7 @@ import com.example.elderwatch.MainActivity
 import com.example.elderwatch.R
 import com.example.elderwatch.utils.Contact
 import com.example.elderwatch.utils.UserManager
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -47,6 +48,8 @@ class LoginActivity : ComponentActivity() {
                                         UserManager.uid = user.uid
                                         UserManager.email = user.email
                                         UserManager.contacts = mutableListOf<Contact>()
+                                        UserManager.falls = document.get("falls") as MutableList<Timestamp>?
+                                        UserManager.falls?.reverse()
 
                                         val uids = document.get("contacts") as MutableList<String>?
 
@@ -66,7 +69,6 @@ class LoginActivity : ComponentActivity() {
                                                     }
                                             }
                                         }
-
 
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)
