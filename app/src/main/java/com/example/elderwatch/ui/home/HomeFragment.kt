@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
             }
             
             // Enviar notificações
-            DataSender.notifyContacts()
+            DataSender.sendFall()
         }
 
         return view

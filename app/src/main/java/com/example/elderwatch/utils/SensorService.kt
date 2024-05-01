@@ -14,9 +14,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.elderwatch.R
 import com.google.firebase.Timestamp
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -88,7 +85,7 @@ class SensorService : Service(), SensorEventListener {
                 val fall = detectFall()
 
                 if (fall){
-                    DataSender.notifyContacts()
+                    DataSender.sendFall()
 
                     Log.d("FALL DETECTION", "True")
                 }

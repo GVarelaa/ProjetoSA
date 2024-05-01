@@ -9,11 +9,12 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elderwatch.R
+import com.example.elderwatch.utils.Fall
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ActivityAdapter(private val context: Context, private val activities: List<Timestamp>) :
+class ActivityAdapter(private val context: Context, private val activities: List<Fall>) :
     RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>() {
 
     class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,10 +28,10 @@ class ActivityAdapter(private val context: Context, private val activities: List
 
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        var timestamp = activities[position]
+        var activity = activities[position]
         val dateFormat = SimpleDateFormat("dd/MM 'às' HH:mm", Locale.getDefault())
 
-        holder.activityTimestamp.text = dateFormat.format(timestamp.toDate())
+        holder.activityTimestamp.text = dateFormat.format(activity.timestamp.toDate())
 
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {

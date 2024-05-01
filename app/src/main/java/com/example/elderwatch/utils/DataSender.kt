@@ -1,9 +1,6 @@
 package com.example.elderwatch.utils
 
-import android.app.Activity
 import android.location.Location
-import android.util.Log
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +29,8 @@ object DataSender {
         }
     }
     fun sendLocation(location: Location) {
+        UserManager.location = location
+
         val db = FirebaseFirestore.getInstance()
         val uid = UserManager.uid
         val locationValues = hashMapOf(
@@ -78,20 +77,35 @@ object DataSender {
         })
     }
 
-    fun notifyContacts() {
+    fun sendFall() {
         val db = FirebaseFirestore.getInstance()
         val contacts = UserManager.contacts
         val uid = UserManager.uid
 
+
         // Adicionar queda à lista de quedas
         if (uid != null) {
             val timestamp = Timestamp.now()
+            val location = UserManager.location
+            var locMap: HashMap<String, Double>? = null
 
-            UserManager.falls?.add(0, timestamp)
+            if (location != null){
+                locMap = hashMapOf(
+                    "latitude" to location.latitude,
+                    "longitude" to location.longitude
+                )
+            }
+
+            val fall = hashMapOf(
+                "timestamp" to timestamp,
+                "location" to locMap
+            )
+
+            UserManager.falls?.add(0, Fall(timestamp, location))
 
             db.collection("users")
                 .document(uid)
-                .update("falls", FieldValue.arrayUnion(timestamp))
+                .update("falls", FieldValue.arrayUnion(fall))
         }
 
         // Notificar todos os contactos

@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import com.example.elderwatch.MainActivity
 import com.example.elderwatch.R
 import com.example.elderwatch.utils.Contact
+import com.example.elderwatch.utils.Fall
 import com.example.elderwatch.utils.UserManager
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -47,8 +48,9 @@ class LoginActivity : ComponentActivity() {
                                     if (document != null) {
                                         UserManager.uid = user.uid
                                         UserManager.email = user.email
+                                        UserManager.location = null
                                         UserManager.contacts = mutableListOf<Contact>()
-                                        UserManager.falls = document.get("falls") as MutableList<Timestamp>?
+                                        UserManager.falls = document.get("falls") as MutableList<Fall>?
                                         UserManager.falls?.reverse()
 
                                         val uids = document.get("contacts") as MutableList<String>?

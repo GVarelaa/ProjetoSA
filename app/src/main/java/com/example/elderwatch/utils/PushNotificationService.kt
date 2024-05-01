@@ -31,7 +31,6 @@ class PushNotificationService: FirebaseMessagingService() {
         super.onNewToken(token)
 
         val db = FirebaseFirestore.getInstance()
-
         val tokenField = hashMapOf(
             "token" to token
         )
