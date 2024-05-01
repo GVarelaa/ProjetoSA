@@ -12,6 +12,7 @@ import com.example.elderwatch.R
 import com.example.elderwatch.utils.Contact
 import com.example.elderwatch.utils.Fall
 import com.example.elderwatch.utils.UserManager
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -50,8 +51,23 @@ class LoginActivity : ComponentActivity() {
                                         UserManager.email = user.email
                                         UserManager.location = null
                                         UserManager.contacts = mutableListOf<Contact>()
-                                        UserManager.falls = document.get("falls") as MutableList<Fall>?
-                                        UserManager.falls?.reverse()
+
+                                        val falls = document.get("falls") as MutableList<HashMap<String, Any>>?
+
+                                        if (falls != null) {
+                                            var temp = mutableListOf<Fall>()
+                                            for (fall in falls) {
+                                                val location = fall["location"] as HashMap<String, Double>
+
+                                                temp.add(Fall(fall["timestamp"] as Timestamp,
+                                                                LatLng(location["latitude"] as Double,
+                                                                       location["longitude"] as Double)
+                                                ))
+                                            }
+
+                                            UserManager.falls = temp
+                                            UserManager.falls?.reverse()
+                                        }
 
                                         val uids = document.get("contacts") as MutableList<String>?
 

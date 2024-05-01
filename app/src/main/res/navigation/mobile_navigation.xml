@@ -46,9 +46,6 @@
         android:name="com.example.elderwatch.ui.contacts.MapFragment"
         android:label="Mapa"
         tools:layout="@layout/fragment_map">
-        <argument
-            app:argType="string"
-            android:name="contactId"/>
     </fragment>
 
     <action
@@ -70,5 +67,9 @@
     <action
         android:id="@+id/action_mapFragment_to_contactsFragment"
         app:destination="@id/navigation_contacts" />
+
+    <action
+        android:id="@+id/action_mapFragment_to_activitiesFragment"
+        app:destination="@id/navigation_dashboard" />
 
 </navigation>

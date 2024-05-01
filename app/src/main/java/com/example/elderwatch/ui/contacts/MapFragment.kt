@@ -1,6 +1,7 @@
 package com.example.elderwatch.ui.contacts
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.Timestamp
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -24,6 +27,8 @@ import java.util.Locale
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private val viewModel: MapViewModel by viewModels()
+    private lateinit var location: LatLng
+    private lateinit var timestamp: Timestamp
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,26 +49,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             centerMap()
         }
 
-        val contactId = arguments?.getString("contactId")
-            ?: throw IllegalStateException("Contact ID is required")
-        viewModel.fetchCoordinatesById(contactId)
-        observeViewModel()
+        val navigation = arguments?.getString("navigation")
 
         val backButton = view.findViewById<Button>(R.id.backButton)
         backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mapFragment_to_contactsFragment)
+            if (navigation == "contacts") findNavController().navigate(R.id.action_mapFragment_to_contactsFragment)
+            else if (navigation == "activities") findNavController().navigate(R.id.action_mapFragment_to_activitiesFragment)
         }
+
+        location = arguments?.get("location") as LatLng
+        timestamp = arguments?.get("timestamp") as Timestamp
+
+        val lastUpdate = formatLastUpdate(timestamp)
+
+        val textView = view?.findViewById<TextView>(R.id.lastUpdateTextView)
+        textView?.text = "Última Atualização: $lastUpdate"
+
+        setupMap()
     }
 
-    private fun observeViewModel() {
-        viewModel.location.observe(viewLifecycleOwner) { location ->
-            if (::map.isInitialized) {
-                updateMap(location)
-                viewModel.lastUpdate.observe(viewLifecycleOwner) { lastUpdate ->
-                    val textView = view?.findViewById<TextView>(R.id.lastUpdateTextView)
-                    textView?.text = "Última Atualização: $lastUpdate"
-                }
-            }
+    private fun setupMap() {
+        if (::map.isInitialized) {
+            updateMap()
         }
     }
 
@@ -71,10 +78,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         map = googleMap
         map.mapType = GoogleMap.MAP_TYPE_HYBRID
 
-        viewModel.location.value?.let { updateMap(it) }
+        updateMap()
     }
 
-    private fun updateMap(location: LatLng) {
+    private fun updateMap() {
         if (::map.isInitialized) {
             map.clear()
             map.addMarker(MarkerOptions().position(location))
@@ -90,9 +97,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun centerMap() {
         if (::map.isInitialized) {
-            viewModel.location.value?.let {
-                updateMap(it)
-            }
+            updateMap()
         }
+    }
+
+    private fun formatLastUpdate(timestamp: Timestamp): String {
+        val date = timestamp.toDate()
+        val dateFormat = SimpleDateFormat("dd/MM 'às' HH:mm", Locale.getDefault())
+
+        return dateFormat.format(date)
     }
 }

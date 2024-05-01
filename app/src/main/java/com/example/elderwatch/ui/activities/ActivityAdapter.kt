@@ -35,9 +35,13 @@ class ActivityAdapter(private val context: Context, private val activities: List
 
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {
-            //val navController = Navigation.findNavController(holder.itemView)
-            //val bundle = bundleOf("contactId" to contact.uid)
-            //navController.navigate(R.id.navigation_map, bundle)
+            val navController = Navigation.findNavController(holder.itemView)
+            val bundle = bundleOf(
+                "timestamp" to activity.timestamp,
+                "location" to activity.location,
+                "navigation" to "activities"
+            )
+            navController.navigate(R.id.navigation_map, bundle)
         }
     }
 

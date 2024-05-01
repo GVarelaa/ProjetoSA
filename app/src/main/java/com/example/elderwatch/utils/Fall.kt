@@ -1,7 +1,7 @@
 package com.example.elderwatch.utils
 
-import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 
-class Fall(val timestamp: Timestamp, val location: Location?) {
+class Fall(val timestamp: Timestamp, val location: LatLng) {
 }

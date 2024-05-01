@@ -1,6 +1,7 @@
 package com.example.elderwatch.utils
 
 import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -101,7 +102,9 @@ object DataSender {
                 "location" to locMap
             )
 
-            UserManager.falls?.add(0, Fall(timestamp, location))
+            if (location != null) {
+                UserManager.falls?.add(0, Fall(timestamp, LatLng(location.latitude, location.longitude)))
+            }
 
             db.collection("users")
                 .document(uid)
