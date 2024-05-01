@@ -1,21 +1,53 @@
 package com.example.elderwatch.ui.contacts
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.elderwatch.utils.Contact
 import com.example.elderwatch.utils.UserManager
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ContactsViewModel : ViewModel() {
-    val contacts = MutableLiveData<MutableList<Any?>>()
+    private val _contacts = MutableLiveData<List<Contact>>()
+    val contacts: LiveData<List<Contact>> = _contacts
 
     init {
         fetchData()
     }
 
-    fun fetchData() {
-        contacts.value = UserManager.contacts as MutableList<Any?>?
+    private fun fetchData() {
+        _contacts.value = UserManager.contacts
     }
-    fun addContact(newContact: String) {
-        contacts.value?.plusAssign(newContact)
+
+    fun addContact(email: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("users").whereEqualTo("email", email).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val name = document.getString("name") ?: ""
+                    val uid = document.id
+                    val contact = Contact(name, email, uid)
+
+                    val updatedContacts = ArrayList(_contacts.value ?: emptyList())
+                    updatedContacts.add(contact)
+                    _contacts.value = updatedContacts
+                    UserManager.contacts = updatedContacts
+
+                    val userDocument = UserManager.uid?.let { db.collection("users").document(it) }
+
+                    userDocument?.update("contacts", FieldValue.arrayUnion(uid))
+                        ?.addOnSuccessListener {
+                            Log.d("Firestore", "Contact successfully added to contacts array!")
+                        }?.addOnFailureListener { e ->
+                        Log.e("Firestore", "Error adding contact to contacts array", e)
+                    }
+                }
+            }
+            .addOnFailureListener {
+                Log.d("AddContact", "Error getting documents: ", it)
+            }
     }
 }

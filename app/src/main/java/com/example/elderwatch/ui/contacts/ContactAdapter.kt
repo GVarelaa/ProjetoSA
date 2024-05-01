@@ -1,5 +1,6 @@
 package com.example.elderwatch.ui.contacts
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ContactAdapter(private val context: Context, private val contacts: List<Contact>) :
+class ContactAdapter(private val context: Context, private var contacts: MutableList<Contact>) :
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,5 +58,12 @@ class ContactAdapter(private val context: Context, private val contacts: List<Co
 
     override fun getItemCount(): Int {
         return contacts.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateContacts(newContacts: List<Contact>) {
+        contacts.clear()
+        contacts.addAll(newContacts)
+        notifyDataSetChanged()
     }
 }

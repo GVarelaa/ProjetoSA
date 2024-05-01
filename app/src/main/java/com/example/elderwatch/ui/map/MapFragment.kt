@@ -1,14 +1,12 @@
-package com.example.elderwatch.ui.contacts
+package com.example.elderwatch.ui.map
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.elderwatch.R
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,14 +17,11 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Timestamp
-import java.sql.Time
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
-    private val viewModel: MapViewModel by viewModels()
     private lateinit var location: LatLng
     private lateinit var timestamp: Timestamp
 
