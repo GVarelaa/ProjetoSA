@@ -1,4 +1,4 @@
-package com.example.elderwatch.ui.map
+package com.example.elderwatch.ui.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.elderwatch.R
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -21,7 +22,10 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback {
+    private lateinit var contactsViewModel: ContactsViewModel
+
     private lateinit var map: GoogleMap
+    private lateinit var contactId: String
     private lateinit var location: LatLng
     private lateinit var timestamp: Timestamp
 
@@ -30,7 +34,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        return inflater.inflate(R.layout.fragment_map_contacts, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,14 +48,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             centerMap()
         }
 
-        val navigation = arguments?.getString("navigation")
-
         val backButton = view.findViewById<Button>(R.id.backButton)
         backButton.setOnClickListener {
-            if (navigation == "contacts") findNavController().navigate(R.id.action_mapFragment_to_contactsFragment)
-            else if (navigation == "activities") findNavController().navigate(R.id.action_mapFragment_to_activitiesFragment)
+            findNavController().navigate(R.id.action_mapFragment_to_contactsFragment)
         }
 
+        contactId = arguments?.get("contactId") as String
         location = arguments?.get("location") as LatLng
         timestamp = arguments?.get("timestamp") as Timestamp
 
@@ -59,6 +61,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val textView = view?.findViewById<TextView>(R.id.lastUpdateTextView)
         textView?.text = "Última Atualização: $lastUpdate"
+
+        contactsViewModel = ViewModelProvider(requireActivity()).get(ContactsViewModel::class.java)
+        val removeContactButton = view.findViewById<Button>(R.id.removeContactButton)
+        removeContactButton.setOnClickListener {
+            contactsViewModel.removeContact(contactId)
+            findNavController().navigate(R.id.action_mapFragment_to_contactsFragment)
+        }
 
         setupMap()
     }

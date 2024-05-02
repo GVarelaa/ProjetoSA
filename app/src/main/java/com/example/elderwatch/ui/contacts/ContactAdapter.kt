@@ -44,6 +44,7 @@ class ContactAdapter(private val context: Context, private var contacts: Mutable
 
                     val navController = Navigation.findNavController(holder.itemView)
                     val bundle = bundleOf(
+                        "contactId" to contact.uid,
                         "location" to LatLng(
                             location?.get("latitude") as Double,
                             location.get("longitude") as Double
@@ -51,7 +52,7 @@ class ContactAdapter(private val context: Context, private var contacts: Mutable
                         "timestamp" to (location.get("timestamp") ?: Timestamp.now()),
                         "navigation" to "contacts"
                     )
-                    navController.navigate(R.id.navigation_map, bundle)
+                    navController.navigate(R.id.navigation_map_contacts, bundle)
                 }
         }
     }

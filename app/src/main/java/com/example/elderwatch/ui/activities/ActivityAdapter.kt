@@ -41,7 +41,7 @@ class ActivityAdapter(private val context: Context, private val activities: List
                 "location" to activity.location,
                 "navigation" to "activities"
             )
-            navController.navigate(R.id.navigation_map, bundle)
+            navController.navigate(R.id.navigation_map_activities, bundle)
         }
     }
 

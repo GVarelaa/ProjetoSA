@@ -50,4 +50,21 @@ class ContactsViewModel : ViewModel() {
                 Log.d("AddContact", "Error getting documents: ", it)
             }
     }
+
+    fun removeContact(uid: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        val updatedContacts = ArrayList(_contacts.value ?: emptyList())
+        updatedContacts.removeAll { it.uid == uid }
+        _contacts.value = updatedContacts
+        UserManager.contacts = updatedContacts
+
+        val userDocument = UserManager.uid?.let { db.collection("users").document(it) }
+        userDocument?.update("contacts", FieldValue.arrayRemove(uid))
+            ?.addOnSuccessListener {
+                Log.d("Firestore", "Contact successfully removed from contacts array!")
+            }?.addOnFailureListener { e ->
+                Log.e("Firestore", "Error removing contact from contacts array", e)
+            }
+    }
 }
