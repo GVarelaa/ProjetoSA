@@ -9,16 +9,16 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elderwatch.R
-import com.example.elderwatch.utils.Fall
-import com.google.firebase.Timestamp
+import com.example.elderwatch.utils.Activity
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ActivityAdapter(private val context: Context, private val activities: List<Fall>) :
+class ActivityAdapter(private val context: Context, private val activities: List<Activity>) :
     RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>() {
 
     class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val activityTimestamp: TextView = itemView.findViewById(R.id.activity_timestamp)
+        val activityFall: TextView = itemView.findViewById(R.id.activity_fall)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -32,6 +32,7 @@ class ActivityAdapter(private val context: Context, private val activities: List
         val dateFormat = SimpleDateFormat("dd/MM 'às' HH:mm", Locale.getDefault())
 
         holder.activityTimestamp.text = dateFormat.format(activity.timestamp.toDate())
+        holder.activityFall.text = if (activity.fall) "Queda" else "Emergência"
 
         // Set click listener for the contact item
         holder.itemView.setOnClickListener {

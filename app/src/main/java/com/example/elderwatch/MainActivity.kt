@@ -17,9 +17,14 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import android.Manifest
 import android.content.Intent
+import android.os.Looper
 import com.example.elderwatch.utils.DataSender
 import com.example.elderwatch.utils.SensorService
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 
 
 class MainActivity : AppCompatActivity() {
@@ -65,10 +70,19 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                DataSender.sendLocation(location)
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 120000).build()
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(result: LocationResult) {
+                result ?: return
+                for (location in result.locations) {
+                    DataSender.sendLocation(location)
+                }
             }
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)

@@ -18,7 +18,6 @@
             android:id="@+id/activity_fall"
             style="@style/viewParent.headerText"
             android:layout_marginStart="5dp"
-            android:text="Queda"
             android:textSize="18sp" />
 
         <TextView

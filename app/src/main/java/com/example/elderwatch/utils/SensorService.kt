@@ -90,7 +90,7 @@ class SensorService : Service(), SensorEventListener {
                     val longLie = detectLongLie()
 
                     if (longLie){
-                        DataSender.sendFall()
+                        DataSender.sendActivity(true)
 
                         Log.d("LONGLIE DETECTION", "True")
                     }

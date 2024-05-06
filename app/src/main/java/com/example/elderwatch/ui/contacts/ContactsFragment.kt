@@ -40,8 +40,6 @@ class ContactsFragment : Fragment() {
         contactAdapter = contactList?.let { ContactAdapter(requireContext(), it) }!!
         setupRecyclerView(view)
 
-        setupRecyclerView(view)
-
         viewModel.contacts.observe(viewLifecycleOwner) { contacts ->
             contactAdapter.updateContacts(contacts)
         }

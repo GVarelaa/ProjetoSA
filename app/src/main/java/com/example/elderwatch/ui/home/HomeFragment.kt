@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
             }
             
             // Enviar notificações
-            DataSender.sendFall()
+            DataSender.sendActivity(false)
         }
 
         return view

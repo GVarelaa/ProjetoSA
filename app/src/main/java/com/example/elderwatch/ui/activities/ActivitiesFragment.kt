@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.elderwatch.R
-import com.example.elderwatch.ui.contacts.ContactAdapter
 import com.example.elderwatch.utils.UserManager
 
 class ActivitiesFragment : Fragment() {
@@ -31,7 +30,7 @@ class ActivitiesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activityList = UserManager.falls
+        val activityList = UserManager.activities
 
         activityAdapter = activityList?.let {
             ActivityAdapter(requireContext(), it)

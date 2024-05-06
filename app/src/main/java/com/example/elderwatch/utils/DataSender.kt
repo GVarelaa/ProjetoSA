@@ -78,11 +78,10 @@ object DataSender {
         })
     }
 
-    fun sendFall() {
+    fun sendActivity(isFall: Boolean) {
         val db = FirebaseFirestore.getInstance()
         val contacts = UserManager.contacts
         val uid = UserManager.uid
-
 
         // Adicionar queda à lista de quedas
         if (uid != null) {
@@ -97,18 +96,19 @@ object DataSender {
                 )
             }
 
-            val fall = hashMapOf(
+            val activity = hashMapOf(
                 "timestamp" to timestamp,
-                "location" to locMap
+                "location" to locMap,
+                "fall" to isFall
             )
 
             if (location != null) {
-                UserManager.falls?.add(0, Fall(timestamp, LatLng(location.latitude, location.longitude)))
+                UserManager.activities?.add(0, Activity(timestamp, LatLng(location.latitude, location.longitude), isFall))
             }
 
             db.collection("users")
                 .document(uid)
-                .update("falls", FieldValue.arrayUnion(fall))
+                .update("activities", FieldValue.arrayUnion(activity))
         }
 
         // Notificar todos os contactos
@@ -127,8 +127,8 @@ object DataSender {
                                 tokens.add(token.toString())
 
                                 val endpoint = "http://10.0.2.2:5000/send"
-                                val title = "Alerta de queda!"
-                                val body = "O utilizador ${UserManager.email} possivelmente sofreu uma queda."
+                                val title = if (isFall) "Alerta de queda!" else "Alerta de emergência!"
+                                val body = if (isFall) "O utilizador ${UserManager.name} possivelmente sofreu uma queda." else "O utilizador ${UserManager.name} premiu o botão de emergência."
 
                                 sendNotification(endpoint, token, title, body)
                             }

@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity
 import com.example.elderwatch.MainActivity
 import com.example.elderwatch.R
 import com.example.elderwatch.utils.Contact
-import com.example.elderwatch.utils.Fall
+import com.example.elderwatch.utils.Activity
 import com.example.elderwatch.utils.UserManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
@@ -49,24 +49,25 @@ class LoginActivity : ComponentActivity() {
                                     if (document != null) {
                                         UserManager.uid = user.uid
                                         UserManager.email = user.email
+                                        UserManager.name = document.get("name") as String
                                         UserManager.location = null
-                                        UserManager.contacts = mutableListOf<Contact>()
+                                        UserManager.contacts = mutableListOf()
 
-                                        val falls = document.get("falls") as MutableList<HashMap<String, Any>>?
+                                        val activities = document.get("activities") as MutableList<HashMap<String, Any>>?
 
-                                        if (falls != null) {
-                                            var temp = mutableListOf<Fall>()
-                                            for (fall in falls) {
-                                                val location = fall["location"] as HashMap<String, Double>
+                                        if (activities != null) {
+                                            var temp = mutableListOf<Activity>()
+                                            for (activity in activities) {
+                                                val location = activity["location"] as HashMap<String, Double>
 
-                                                temp.add(Fall(fall["timestamp"] as Timestamp,
+                                                temp.add(Activity(activity["timestamp"] as Timestamp,
                                                                 LatLng(location["latitude"] as Double,
-                                                                       location["longitude"] as Double)
-                                                ))
+                                                                       location["longitude"] as Double),
+                                                                activity["fall"] as Boolean))
                                             }
 
-                                            UserManager.falls = temp
-                                            UserManager.falls?.reverse()
+                                            UserManager.activities = temp
+                                            UserManager.activities?.reverse()
                                         }
 
                                         val uids = document.get("contacts") as MutableList<String>?
