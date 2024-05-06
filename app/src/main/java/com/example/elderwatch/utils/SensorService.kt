@@ -22,7 +22,7 @@ class SensorService : Service(), SensorEventListener {
     private var accelerometer: Sensor? = null
     private var sensorData: MutableList<HashMap<String, Any>> = mutableListOf()
     private var lastUpdate: Long = 0
-    private val updateThreshold: Long = 5 // Tempo em milissegundos (5 segundos)
+    private val updateThreshold: Long = 5000 // Tempo em milissegundos (5 segundos)
     private val lowThreshold: Double = 2.5
     private val highThreshold: Double = 8.0
     private var isLongLie: Boolean = false
@@ -89,9 +89,9 @@ class SensorService : Service(), SensorEventListener {
                     val longLie = detectLongLie()
 
                     if (longLie){
-                        Log.d("FALL DETECTION", "True")
+                        Log.d("LONGLIE DETECTION", "True")
                     }
-                    else Log.d("FALL DETECTION", "False")
+                    else Log.d("LONGLIE DETECTION", "False")
 
                     isLongLie = false
                     sensorData.clear()
@@ -109,9 +109,9 @@ class SensorService : Service(), SensorEventListener {
                         //DataSender.sendFall()
                         isLongLie = true
 
-                        //Log.d("FALL DETECTION", "True")
+                        Log.d("FALL DETECTION", "True")
                     }
-                    //else Log.d("FALL DETECTION", "False")
+                    else Log.d("FALL DETECTION", "False")
 
                     //DataSender.sendSensorData(sensorData, fall)
 
@@ -134,11 +134,10 @@ class SensorService : Service(), SensorEventListener {
     }
 
     private fun detectLongLie(): Boolean {
-        val max = sensorData.maxByOrNull { it["magnitude"] as Double } as Double
-        val min = sensorData.minByOrNull { it["magnitude"] as Double } as Double
+        val max = sensorData.maxByOrNull { it["magnitude"] as Double } as HashMap<String, Any>
+        val min = sensorData.minByOrNull { it["magnitude"] as Double } as HashMap<String, Any>
 
-        if (min >= lowLongLieThreshold && max <= highLongLieThreshold) return true
-        else return false
+        return min["magnitude"] as Double >= lowLongLieThreshold && max["magnitude"] as Double <= highLongLieThreshold
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
