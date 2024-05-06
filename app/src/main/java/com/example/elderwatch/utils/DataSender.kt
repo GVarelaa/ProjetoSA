@@ -1,6 +1,7 @@
 package com.example.elderwatch.utils
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
@@ -13,6 +14,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
+import java.util.Properties
 
 object DataSender {
     fun sendToken(token: String) {
@@ -126,7 +128,7 @@ object DataSender {
                             if (token != null && !tokens.contains(token)) {
                                 tokens.add(token.toString())
 
-                                val endpoint = "http://10.0.2.2:5000/send"
+                                val endpoint = "http://35.226.232.182:80/send"
                                 val title = if (isFall) "Alerta de queda!" else "Alerta de emergência!"
                                 val body = if (isFall) "O utilizador ${UserManager.name} possivelmente sofreu uma queda." else "O utilizador ${UserManager.name} premiu o botão de emergência."
 

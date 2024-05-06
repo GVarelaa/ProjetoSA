@@ -60,6 +60,7 @@ class SensorService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        stopForeground(true)
 
         sensorManager.unregisterListener(this)
     }
