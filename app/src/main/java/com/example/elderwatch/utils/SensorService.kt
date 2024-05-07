@@ -29,6 +29,7 @@ class SensorService : Service(), SensorEventListener {
     private val lowLongLieThreshold: Double = 0.0
     private val highLongLieThreshold: Double = 2.0
     private var isLongLie: Boolean = false
+    private val filter: LowPassFilter = LowPassFilter(alpha = 0.1f)
     override fun onCreate() {
         super.onCreate()
 
@@ -67,10 +68,12 @@ class SensorService : Service(), SensorEventListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
-            val x: Double = event.values[0].toDouble().pow(2.toDouble())
-            val y: Double = event.values[1].toDouble().pow(2.toDouble())
-            val z: Double = event.values[2].toDouble().pow(2.toDouble())
-            val magnitude = sqrt(x+y+z)
+            val (x, y, z) = filter.applyFilter(event.values[0], event.values[1], event.values[2])
+
+            val x2: Double = x.toDouble() * x.toDouble()
+            val y2: Double = y.toDouble() * y.toDouble()
+            val z2: Double = z.toDouble() * z.toDouble()
+            val magnitude = sqrt(x2+y2+z2)
 
             val data = HashMap<String, Any>()
             data["x"] = x
@@ -83,44 +86,38 @@ class SensorService : Service(), SensorEventListener {
 
             val currentTime = System.currentTimeMillis()
 
-            if (isLongLie){
-                if ((currentTime - lastUpdate) > updateLongLieThreshold) {
-                    lastUpdate = currentTime
+            if (isLongLie && ((currentTime - lastUpdate) > updateLongLieThreshold)){
+                lastUpdate = currentTime
 
-                    val longLie = detectLongLie()
+                val longLie = detectLongLie()
 
-                    if (longLie){
-                        DataSender.sendActivity(true)
+                if (longLie){
+                    DataSender.sendActivity(true)
 
-                        Log.d("LONGLIE DETECTION", "True")
-                    }
-                    else Log.d("LONGLIE DETECTION", "False")
-
-                    DataSender.sendSensorData(sensorData, longLie)
-
-                    isLongLie = false
-                    sensorData.clear()
+                    Log.d("LONGLIE DETECTION", "True")
                 }
+                else Log.d("LONGLIE DETECTION", "False")
+
+                DataSender.sendSensorData(sensorData, longLie)
+
+                isLongLie = false
+                sensorData.clear()
             }
-            else {
-                if ((currentTime - lastUpdate) > updateFallThreshold) {
-                    lastUpdate = currentTime
+            else if ((currentTime - lastUpdate) > updateFallThreshold) {
+                lastUpdate = currentTime
 
-                    val fall = detectFall()
+                if (detectFall()){
+                    isLongLie = true
 
-                    if (fall){
-                        isLongLie = true
-
-                        Log.d("FALL DETECTION", "True")
-                    }
-                    else {
-                        DataSender.sendSensorData(sensorData, false)
-
-                        Log.d("FALL DETECTION", "False")
-                    }
-
-                    sensorData.clear()
+                    Log.d("FALL DETECTION", "True")
                 }
+                else {
+                    DataSender.sendSensorData(sensorData, false)
+
+                    Log.d("FALL DETECTION", "False")
+                }
+
+                sensorData.clear()
             }
         }
     }
