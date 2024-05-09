@@ -22,7 +22,7 @@ class SensorService : Service(), SensorEventListener {
     private var accelerometer: Sensor? = null
     private var sensorData: MutableList<HashMap<String, Any>> = mutableListOf()
     private var lastUpdate: Long = 0
-    private val updateFallThreshold: Long = 5000 // 5 segundos
+    private val updateFallThreshold: Long = 10000 // 10 segundos
     private val updateLongLieThreshold: Long = 3000 // 3 segundos
     private val lowFallThreshold: Double = 2.5
     private val highFallThreshold: Double = 8.0
