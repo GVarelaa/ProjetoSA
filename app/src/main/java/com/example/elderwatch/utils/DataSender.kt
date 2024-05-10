@@ -128,7 +128,7 @@ object DataSender {
                             if (token != null && !tokens.contains(token)) {
                                 tokens.add(token.toString())
 
-                                val endpoint = "http://35.226.232.182:80/send"
+                                val endpoint = "http://34.27.216.187:80/send"
                                 val title = if (isFall) "Alerta de queda!" else "Alerta de emergência!"
                                 val body = if (isFall) "O utilizador ${UserManager.name} possivelmente sofreu uma queda." else "O utilizador ${UserManager.name} premiu o botão de emergência."
 
