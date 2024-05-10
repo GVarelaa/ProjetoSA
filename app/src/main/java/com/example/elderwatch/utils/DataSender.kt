@@ -31,6 +31,7 @@ object DataSender {
                 .update(tokenField as Map<String, Any>)
         }
     }
+
     fun sendLocation(location: Location) {
         UserManager.location = location
 
@@ -51,6 +52,7 @@ object DataSender {
                 .update(location as Map<String, Any>)
         }
     }
+
     fun sendNotification(endpoint: String, token: Any?, title: String, body: String) {
         val client = OkHttpClient()
 
@@ -91,7 +93,7 @@ object DataSender {
             val location = UserManager.location
             var locMap: HashMap<String, Double>? = null
 
-            if (location != null){
+            if (location != null) {
                 locMap = hashMapOf(
                     "latitude" to location.latitude,
                     "longitude" to location.longitude
@@ -105,12 +107,15 @@ object DataSender {
             )
 
             if (location != null) {
-                UserManager.activities?.add(0, Activity(timestamp, LatLng(location.latitude, location.longitude), isFall))
-            }
+                UserManager.activities?.add(
+                    0,
+                    Activity(timestamp, LatLng(location.latitude, location.longitude), isFall)
+                )
 
-            db.collection("users")
-                .document(uid)
-                .update("activities", FieldValue.arrayUnion(activity))
+                db.collection("users")
+                    .document(uid)
+                    .update("activities", FieldValue.arrayUnion(activity))
+            }
         }
 
         // Notificar todos os contactos
@@ -129,8 +134,10 @@ object DataSender {
                                 tokens.add(token.toString())
 
                                 val endpoint = "http://34.27.216.187:80/send"
-                                val title = if (isFall) "Alerta de queda!" else "Alerta de emergência!"
-                                val body = if (isFall) "O utilizador ${UserManager.name} possivelmente sofreu uma queda." else "O utilizador ${UserManager.name} premiu o botão de emergência."
+                                val title =
+                                    if (isFall) "Alerta de queda!" else "Alerta de emergência!"
+                                val body =
+                                    if (isFall) "O utilizador ${UserManager.name} possivelmente sofreu uma queda." else "O utilizador ${UserManager.name} premiu o botão de emergência."
 
                                 sendNotification(endpoint, token, title, body)
                             }
